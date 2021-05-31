@@ -52,7 +52,7 @@ class IinParser
         if ($violationList->count()) {
             $unprocessibleEntityException = new UnprocessibleEntityException();
             foreach ($violationList as $validateErrorEntity) {
-                $validateErrorEntity->setField('value');
+                //$validateErrorEntity->setField('value');
             }
             $unprocessibleEntityException->setErrorCollection(ValidationHelper::createErrorCollectionFromViolationList($violationList));
             throw $unprocessibleEntityException;
