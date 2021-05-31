@@ -17,13 +17,11 @@ class IinParser
         self::validateValue($value);
         $iinEntity = new IinEntity();
         $iinEntity->setValue($value);
-
         $iinEntity->setSerialNumber(substr($value, 7, 4));
         $iinEntity->setCheckSum(substr($value, 11, 1));
         $iinEntity->setCentury(substr($value, 6, 1));
         self::validateCentury($iinEntity->getCentury());
         $iinEntity->setSex(self::getSex($iinEntity));
-
         $iinEntity->setBirthday(IinDateHelper::parseDate($iinEntity));
         self::validateSum($value);
         return $iinEntity;

@@ -10,16 +10,9 @@ use ZnKaz\Base\Domain\Entities\IinEntity;
 class IinDateHelper
 {
 
-    public static function parseCentury(IinEntity $iinEntity): int
-    {
-        $century = $iinEntity->getCentury();
-        return $century;
-    }
-
     public static function parseDate(IinEntity $iinEntity): DateEntity
     {
         $value = $iinEntity->getValue();
-
         $age = self::getAge($iinEntity->getCentury());
         $smallYear = substr($value, 0, 2);
         $dateEntity = new DateEntity();
@@ -27,14 +20,10 @@ class IinDateHelper
         $dateEntity->setYear($age . $smallYear);
         $dateEntity->setMonth(substr($value, 2, 2));
         $dateEntity->setDay(substr($value, 4, 2));
-
-//        $century = substr($value, 6, 1);
-//        $dateEntity->setCentury();
-
         if (!self::validateDate($dateEntity)) {
-            throw new Exception();
+            throw new Exception('Birthday not valid');
         }
-        self::getOld($dateEntity);
+        //self::getOld($dateEntity);
         return $dateEntity;
     }
 
@@ -45,7 +34,7 @@ class IinDateHelper
         $diffSec = self::dateStringToTimestamp($nowDateString) - self::dateStringToTimestamp($birthDateString);
         $yearCount = floor($diffSec / TimeEnum::SECOND_PER_YEAR);
         if ($yearCount <= 0) {
-            throw new Exception();
+            throw new Exception('');
         }
         return $yearCount;
     }
