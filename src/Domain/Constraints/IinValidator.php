@@ -35,10 +35,10 @@ class IinValidator extends ConstraintValidator
         try {
             $iinEntity = IinParser::parse($value);
         } catch (UnprocessibleEntityException $e) {
-            if($e->getMessage()) {
-                $message = $e->getMessage();
-            } else {
+            if($constraint->message) {
                 $message = $constraint->message;
+            } else {
+                $message = $e->getMessage();
             }
             $this->context->buildViolation($message)
                 ->setParameter('{{ string }}', $value)
