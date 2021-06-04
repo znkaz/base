@@ -22,7 +22,13 @@ class IinParser
         $iinEntity->setCentury(substr($value, 6, 1));
         self::validateCentury($iinEntity->getCentury());
         $iinEntity->setSex(self::getSex($iinEntity));
-        $iinEntity->setBirthday(IinDateHelper::parseDate($iinEntity));
+        try {
+            $iinEntity->setBirthday(IinDateHelper::parseDate($iinEntity));
+        } catch (\Exception $e) {
+            $unprocessibleEntityException = new UnprocessibleEntityException();
+            $unprocessibleEntityException->add('birthday', $e->getMessage());
+            throw $unprocessibleEntityException;
+        }
         self::validateSum($value);
         return $iinEntity;
     }

@@ -27,7 +27,7 @@ class IinDateHelper
         return $dateEntity;
     }
 
-    private static function getOld(DateEntity $dateEntity): int
+    /*private static function getOld(DateEntity $dateEntity): int
     {
         $birthDateString = self::dateToString($dateEntity);
         $nowDateString = self::getNowDateAsString();
@@ -37,7 +37,7 @@ class IinDateHelper
             throw new Exception('');
         }
         return $yearCount;
-    }
+    }*/
 
     private static function validateDate(DateEntity $dateEntity): bool
     {
