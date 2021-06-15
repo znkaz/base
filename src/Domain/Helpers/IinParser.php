@@ -85,16 +85,49 @@ class IinParser
     private static function generateSum($inn): int
     {
         $multiplication =
-            7 * $inn[0] +
+            1 * $inn[0] +
             2 * $inn[1] +
-            4 * $inn[2] +
-            10 * $inn[3] +
-            3 * $inn[4] +
-            5 * $inn[5] +
-            9 * $inn[6] +
-            4 * $inn[7] +
-            6 * $inn[8] +
-            8 * $inn[9];
-        return $multiplication % 11 % 10;
+            3 * $inn[2] +
+            4 * $inn[3] +
+            5 * $inn[4] +
+            6 * $inn[5] +
+            7 * $inn[6] +
+            8 * $inn[7] +
+            9 * $inn[8] +
+            10 * $inn[9];
+            11 * $inn[10];
+        $sum = $multiplication % 11;
+        if ($sum == 10) {
+            $sum =
+                1 * $inn[10] +
+                2 * $inn[11] +
+                3 * $inn[1] +
+                4 * $inn[2] +
+                5 * $inn[3] +
+                6 * $inn[4] +
+                7 * $inn[5] +
+                8 * $inn[6] +
+                9 * $inn[7] +
+                10 * $inn[8] +
+                11 * $inn[9];
+        }
+
+        return $sum;
     }
+
+//    private static function generateSum($inn): int
+//    {
+//        $multiplication =
+//            7 * $inn[0] +
+//            2 * $inn[1] +
+//            4 * $inn[2] +
+//            10 * $inn[3] +
+//            3 * $inn[4] +
+//            5 * $inn[5] +
+//            9 * $inn[6] +
+//            4 * $inn[7] +
+//            6 * $inn[8] +
+//            8 * $inn[9];
+//        return $multiplication % 11 % 10;
+//    }
 }
