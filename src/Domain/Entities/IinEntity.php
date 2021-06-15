@@ -6,11 +6,14 @@ class IinEntity
 {
 
     private $value;
-    private $sex;
+    private $type;
+    private $juridical;
+    private $individual;
+    //private $sex;
     private $serialNumber;
     private $check_sum;
     private $century;
-    private $birthday;
+    //private $birthday;
 
     public function getValue()
     {
@@ -22,7 +25,37 @@ class IinEntity
         $this->value = $value;
     }
 
-    public function getSex()
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
+
+    public function getJuridical(): ?JuridicalEntity
+    {
+        return $this->juridical;
+    }
+
+    public function setJuridical(JuridicalEntity $juridical): void
+    {
+        $this->juridical = $juridical;
+    }
+
+    public function getIndividual(): ?IndividualEntity
+    {
+        return $this->individual;
+    }
+
+    public function setIndividual(IndividualEntity $individual): void
+    {
+        $this->individual = $individual;
+    }
+
+    /*public function getSex()
     {
         return $this->sex;
     }
@@ -30,7 +63,7 @@ class IinEntity
     public function setSex($sex): void
     {
         $this->sex = $sex;
-    }
+    }*/
 
     public function getSerialNumber(): int
     {
@@ -62,7 +95,7 @@ class IinEntity
         $this->century = $century;
     }
 
-    public function getBirthday(): DateEntity
+    /*public function getBirthday(): DateEntity
     {
         return $this->birthday;
     }
@@ -70,5 +103,5 @@ class IinEntity
     public function setBirthday(DateEntity $birthday): void
     {
         $this->birthday = $birthday;
-    }
+    }*/
 }

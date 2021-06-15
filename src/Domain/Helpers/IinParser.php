@@ -8,6 +8,9 @@ use Symfony\Component\Validator\Constraints\Regex;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
 use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnKaz\Base\Domain\Entities\IinEntity;
+use ZnKaz\Base\Domain\Entities\IndividualEntity;
+use ZnKaz\Base\Domain\Entities\JuridicalEntity;
+use ZnKaz\Base\Domain\Enums\TypeEnum;
 
 class IinParser
 {
@@ -17,20 +20,48 @@ class IinParser
         self::validateValue($value);
         $iinEntity = new IinEntity();
         $iinEntity->setValue($value);
+        $iinEntity->setType(self::getType($value));
         $iinEntity->setSerialNumber(substr($value, 7, 4));
         $iinEntity->setCheckSum(substr($value, 11, 1));
         $iinEntity->setCentury(substr($value, 6, 1));
         self::validateCentury($iinEntity->getCentury());
-        $iinEntity->setSex(self::getSex($iinEntity));
+
         try {
-            $iinEntity->setBirthday(IinDateHelper::parseDate($iinEntity));
+            $birthday = IinDateHelper::parseDate($iinEntity);
         } catch (\Exception $e) {
             $unprocessibleEntityException = new UnprocessibleEntityException();
             $unprocessibleEntityException->add('birthday', $e->getMessage());
             throw $unprocessibleEntityException;
         }
+
+        if ($iinEntity->getType() == TypeEnum::INDIVIDUAL) {
+            //$iinEntity->setSex(self::getSex($iinEntity));
+            $individualEntity = new IndividualEntity();
+            $individualEntity->setSex(self::getSex($iinEntity));
+            $individualEntity->setBirthday($birthday);
+            $iinEntity->setIndividual($individualEntity);
+        } elseif ($iinEntity->getType() == TypeEnum::JURIDICAL) {
+            $juridicalEntity = new JuridicalEntity();
+            $juridicalEntity->setType($value[4]);
+            $juridicalEntity->setPart($value[5]);
+            $juridicalEntity->setRegistrationDate($birthday);
+            $iinEntity->setJuridical($juridicalEntity);
+        }
+
         self::validateSum($value);
         return $iinEntity;
+    }
+
+    private static function getType($value): string
+    {
+        $typeMarker = $value[4];
+        if (in_array($typeMarker, [0, 1, 2, 3])) {
+            return TypeEnum::INDIVIDUAL;
+        }
+        if (in_array($typeMarker, [4, 5, 6])) {
+            return TypeEnum::JURIDICAL;
+        }
+        throw new Exception('Error ten day');
     }
 
     private static function validateCentury($century): void
@@ -44,8 +75,8 @@ class IinParser
     private static function getMaxCentury(): int
     {
         $nowYear = date('Y');
-        $nowAge = substr($nowYear, 0, 2);
-        return ($nowAge - 18 + 1) * 2;
+        $nowEpoch = substr($nowYear, 0, 2);
+        return ($nowEpoch - 18 + 1) * 2;
     }
 
     private static function validateValue(string $value): void
@@ -68,7 +99,7 @@ class IinParser
     private static function validateSum(string $value): void
     {
         $sum = intval(substr($value, 11, 1));
-        $sumCalculated = self::generateSum($value);
+        $sumCalculated = CheckSum::generateSum($value);
         if ($sum != $sumCalculated) {
             $unprocessibleEntityException = new UnprocessibleEntityException();
             $unprocessibleEntityException->add('value', 'Bad check sum');
@@ -81,53 +112,4 @@ class IinParser
         $century = $iinEntity->getCentury();
         return !empty($century % 2) ? 'male' : 'female';
     }
-
-    private static function generateSum($inn): int
-    {
-        $multiplication =
-            1 * $inn[0] +
-            2 * $inn[1] +
-            3 * $inn[2] +
-            4 * $inn[3] +
-            5 * $inn[4] +
-            6 * $inn[5] +
-            7 * $inn[6] +
-            8 * $inn[7] +
-            9 * $inn[8] +
-            10 * $inn[9];
-            11 * $inn[10];
-        $sum = $multiplication % 11;
-        if ($sum == 10) {
-            $sum =
-                1 * $inn[10] +
-                2 * $inn[11] +
-                3 * $inn[1] +
-                4 * $inn[2] +
-                5 * $inn[3] +
-                6 * $inn[4] +
-                7 * $inn[5] +
-                8 * $inn[6] +
-                9 * $inn[7] +
-                10 * $inn[8] +
-                11 * $inn[9];
-        }
-
-        return $sum;
-    }
-
-//    private static function generateSum($inn): int
-//    {
-//        $multiplication =
-//            7 * $inn[0] +
-//            2 * $inn[1] +
-//            4 * $inn[2] +
-//            10 * $inn[3] +
-//            3 * $inn[4] +
-//            5 * $inn[5] +
-//            9 * $inn[6] +
-//            4 * $inn[7] +
-//            6 * $inn[8] +
-//            8 * $inn[9];
-//        return $multiplication % 11 % 10;
-//    }
 }

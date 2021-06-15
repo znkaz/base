@@ -6,6 +6,7 @@ use Exception;
 use ZnCore\Base\Enums\Measure\TimeEnum;
 use ZnKaz\Base\Domain\Entities\DateEntity;
 use ZnKaz\Base\Domain\Entities\IinEntity;
+use ZnKaz\Base\Domain\Enums\TypeEnum;
 
 class IinDateHelper
 {
@@ -13,13 +14,19 @@ class IinDateHelper
     public static function parseDate(IinEntity $iinEntity): DateEntity
     {
         $value = $iinEntity->getValue();
-        $age = self::getAge($iinEntity->getCentury());
+        $epoch = self::getEpoch($iinEntity->getCentury());
         $smallYear = substr($value, 0, 2);
         $dateEntity = new DateEntity();
-        $dateEntity->setAge($age);
-        $dateEntity->setYear($age . $smallYear);
+        $dateEntity->setEpoch($epoch);
+        $dateEntity->setYear($epoch . $smallYear);
         $dateEntity->setMonth(substr($value, 2, 2));
-        $dateEntity->setDay(substr($value, 4, 2));
+
+        if($iinEntity->getType() == TypeEnum::INDIVIDUAL) {
+            $dateEntity->setDay(substr($value, 4, 2));
+        } elseif($iinEntity->getType() == TypeEnum::JURIDICAL) {
+            $dateEntity->setDay( '01');
+        }
+
         if (!self::validateDate($dateEntity)) {
             throw new Exception('Birthday not valid');
         }
@@ -44,7 +51,7 @@ class IinDateHelper
         return checkdate($dateEntity->getMonth(), $dateEntity->getDay(), $dateEntity->getYear());
     }
 
-    private static function getAge(int $century): int
+    private static function getEpoch(int $century): int
     {
         $residue = $century % 2;
         if ($residue == 0) {
