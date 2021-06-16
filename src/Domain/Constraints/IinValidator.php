@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
 use ZnKaz\Base\Domain\Helpers\IinParser;
+use Exception;
 
 class IinValidator extends ConstraintValidator
 {
@@ -34,7 +35,7 @@ class IinValidator extends ConstraintValidator
 
         try {
             $iinEntity = IinParser::parse($value);
-        } catch (UnprocessibleEntityException $e) {
+        } catch (Exception $e) {
             if($constraint->message) {
                 $message = $constraint->message;
             } else {
