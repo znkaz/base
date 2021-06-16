@@ -11,40 +11,75 @@ use ZnKaz\Base\Domain\Enums\TypeEnum;
 class IinDateHelper
 {
 
+    public static function parseDateIndividual($value): DateEntity
+    {
+        $smallYear = substr($value, 0, 2);
+        $dateEntity = new DateEntity();
+        
+        $century = substr($value, 6, 1);
+        $epoch = self::getEpoch($century);
+        $dateEntity->setYear($epoch . $smallYear);
+        $dateEntity->setMonth(substr($value, 2, 2));
+        $dateEntity->setDay(substr($value, 4, 2));
+
+        if (!self::validateDate($dateEntity)) {
+            throw new Exception('Birthday not valid');
+        }
+        return $dateEntity;
+    }
+
+    public static function parseDateJuridical($value): DateEntity
+    {
+        $smallYear = substr($value, 0, 2);
+        $dateEntity = new DateEntity();
+
+        $currentSmallYear = intval(date('y'));
+        if($currentSmallYear > intval($smallYear)) {
+            $dateEntity->setYear('20' . $smallYear);
+        } else {
+            $dateEntity->setYear('19' . $smallYear);
+        }
+        $dateEntity->setMonth(substr($value, 2, 2));
+        $dateEntity->setDay( '01');
+        
+        if (!self::validateDate($dateEntity)) {
+            throw new Exception('Birthday not valid');
+        }
+        return $dateEntity;
+    }
+    
     public static function parseDate(IinEntity $iinEntity): DateEntity
     {
         $value = $iinEntity->getValue();
-        $epoch = self::getEpoch($iinEntity->getCentury());
+
         $smallYear = substr($value, 0, 2);
+
+
         $dateEntity = new DateEntity();
-        $dateEntity->setEpoch($epoch);
-        $dateEntity->setYear($epoch . $smallYear);
-        $dateEntity->setMonth(substr($value, 2, 2));
 
         if($iinEntity->getType() == TypeEnum::INDIVIDUAL) {
+            $century = substr($value, 6, 1);
+            $epoch = self::getEpoch($century);
+            //$dateEntity->setEpoch($epoch);
+            $dateEntity->setYear($epoch . $smallYear);
+            $dateEntity->setMonth(substr($value, 2, 2));
             $dateEntity->setDay(substr($value, 4, 2));
         } elseif($iinEntity->getType() == TypeEnum::JURIDICAL) {
+            $currentSmallYear = intval(date('y'));
+            if($currentSmallYear > intval($smallYear)) {
+                $dateEntity->setYear('20' . $smallYear);
+            } else {
+                $dateEntity->setYear('19' . $smallYear);
+            }
+            $dateEntity->setMonth(substr($value, 2, 2));
             $dateEntity->setDay( '01');
         }
 
         if (!self::validateDate($dateEntity)) {
             throw new Exception('Birthday not valid');
         }
-        //self::getOld($dateEntity);
         return $dateEntity;
     }
-
-    /*private static function getOld(DateEntity $dateEntity): int
-    {
-        $birthDateString = self::dateToString($dateEntity);
-        $nowDateString = self::getNowDateAsString();
-        $diffSec = self::dateStringToTimestamp($nowDateString) - self::dateStringToTimestamp($birthDateString);
-        $yearCount = floor($diffSec / TimeEnum::SECOND_PER_YEAR);
-        if ($yearCount <= 0) {
-            throw new Exception('');
-        }
-        return $yearCount;
-    }*/
 
     private static function validateDate(DateEntity $dateEntity): bool
     {

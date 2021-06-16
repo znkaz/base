@@ -8,7 +8,7 @@ class DateEntity
     private $year;
     private $month;
     private $day;
-    private $epoch;
+    //private $epoch;
     //private $century;
 
     public function getYear(): int
@@ -41,15 +41,15 @@ class DateEntity
         $this->day = $day;
     }
 
-    public function getEpoch(): int
+    /*public function getEpoch(): ?int
     {
-        return $this->age;
+        return $this->epoch;
     }
 
     public function setEpoch(int $epoch): void
     {
-        $this->age = $epoch;
-    }
+        $this->epoch = $epoch;
+    }*/
 
     /*public function getCentury(): int
     {

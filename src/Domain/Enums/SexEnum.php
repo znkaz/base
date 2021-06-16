@@ -5,6 +5,6 @@ namespace ZnKaz\Base\Domain\Enums;
 class SexEnum
 {
 
-    const MALE = 1;
-    const FEMALE = 0;
+    const MALE = 'male';
+    const FEMALE = 'female';
 }

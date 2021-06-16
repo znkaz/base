@@ -7,6 +7,7 @@ class IndividualEntity
 
     private $sex;
     private $birthday;
+    private $century;
 
     public function getSex()
     {
@@ -26,5 +27,15 @@ class IndividualEntity
     public function setBirthday($birthday): void
     {
         $this->birthday = $birthday;
+    }
+    
+    public function getCentury(): ?int
+    {
+        return $this->century;
+    }
+
+    public function setCentury(int $century): void
+    {
+        $this->century = $century;
     }
 }

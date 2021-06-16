@@ -9,11 +9,9 @@ class IinEntity
     private $type;
     private $juridical;
     private $individual;
-    //private $sex;
     private $serialNumber;
-    private $check_sum;
-    private $century;
-    //private $birthday;
+    private $checkSum;
+    private $checkSumSequence;
 
     public function getValue()
     {
@@ -55,16 +53,6 @@ class IinEntity
         $this->individual = $individual;
     }
 
-    /*public function getSex()
-    {
-        return $this->sex;
-    }
-
-    public function setSex($sex): void
-    {
-        $this->sex = $sex;
-    }*/
-
     public function getSerialNumber(): int
     {
         return $this->serialNumber;
@@ -77,31 +65,21 @@ class IinEntity
 
     public function getCheckSum(): int
     {
-        return $this->check_sum;
+        return $this->checkSum;
     }
 
-    public function setCheckSum(int $check_sum): void
+    public function setCheckSum(int $checkSum): void
     {
-        $this->check_sum = $check_sum;
+        $this->checkSum = $checkSum;
     }
 
-    public function getCentury(): int
+    public function getCheckSumSequence(): ?array
     {
-        return $this->century;
+        return $this->checkSumSequence;
     }
 
-    public function setCentury(int $century): void
+    public function setCheckSumSequence(array $checkSumSequence): void
     {
-        $this->century = $century;
+        $this->checkSumSequence = $checkSumSequence;
     }
-
-    /*public function getBirthday(): DateEntity
-    {
-        return $this->birthday;
-    }
-
-    public function setBirthday(DateEntity $birthday): void
-    {
-        $this->birthday = $birthday;
-    }*/
 }

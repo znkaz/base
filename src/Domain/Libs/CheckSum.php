@@ -1,11 +1,13 @@
 <?php
 
-namespace ZnKaz\Base\Domain\Helpers;
+namespace ZnKaz\Base\Domain\Libs;
+
+use ZnKaz\Base\Domain\Entities\CheckSumEntity;
 
 class CheckSum
 {
     
-    public static function generateSum($inn): int
+    public function generateSum($inn): CheckSumEntity
     {
         $sequences = [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -14,27 +16,19 @@ class CheckSum
         ];
 
         foreach ($sequences as $sequence) {
-            $sum = self::calcSum($sequence, $inn);
+            $sum = $this->calcSum($sequence, $inn);
             if ($sum != 10) {
-                return $sum;
+                $checkSumEntity = new CheckSumEntity();
+                $checkSumEntity->setSum($sum);
+                $checkSumEntity->setSequence($sequence);
+                return $checkSumEntity;
             }
         }
 
-        // проверяем ИИН/БИН на корректность (!!! старый алгоритм, не используется !!!)
-        // a12=(1*a1+3*a2+7*a3+9*а4+3*а5+1*а6+9*a7+7*a8+3*a9+9*a10+1*a11) mod 10,
-
-        // https://github.com/shatmanov/iinCheck
-        // https://infostart.ru/1c/articles/68884/
-        // https://github.com/Mi7teR/inn-validate/blob/master/src/index.ts
-        // https://ru.wikipedia.org/wiki/%D0%98%D0%BD%D0%B4%D0%B8%D0%B2%D0%B8%D0%B4%D1%83%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9_%D0%B8%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%BD%D0%BE%D0%BC%D0%B5%D1%80
-        // https://www.npmjs.com/package/inn-validate
-        // https://ru.wikipedia.org/wiki/%D0%91%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%B8%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%BD%D0%BE%D0%BC%D0%B5%D1%80
-        // https://serj.ws/salyk
-        
-        return $sum;
+        throw new \Exception('');
     }
 
-    private static function calcSum(array $arr, $inn): int
+    private function calcSum(array $arr, $inn): int
     {
         $multiplication = 0;
         foreach ($arr as $multiplier => $rank) {
@@ -43,8 +37,21 @@ class CheckSum
         return $multiplication % 11;
     }
 
+
     
     
+    // проверяем ИИН/БИН на корректность (!!! старый алгоритм, не используется !!!)
+    // a12=(1*a1+3*a2+7*a3+9*а4+3*а5+1*а6+9*a7+7*a8+3*a9+9*a10+1*a11) mod 10,
+
+    // https://github.com/shatmanov/iinCheck
+    // https://infostart.ru/1c/articles/68884/
+    // https://github.com/Mi7teR/inn-validate/blob/master/src/index.ts
+    // https://ru.wikipedia.org/wiki/%D0%98%D0%BD%D0%B4%D0%B8%D0%B2%D0%B8%D0%B4%D1%83%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9_%D0%B8%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%BD%D0%BE%D0%BC%D0%B5%D1%80
+    // https://www.npmjs.com/package/inn-validate
+    // https://ru.wikipedia.org/wiki/%D0%91%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%B8%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%BD%D0%BE%D0%BC%D0%B5%D1%80
+    // https://serj.ws/salyk
+
+
     /*private static function generateSum($inn): int
     {
         $multiplication =
