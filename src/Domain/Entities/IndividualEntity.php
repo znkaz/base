@@ -2,7 +2,7 @@
 
 namespace ZnKaz\Base\Domain\Entities;
 
-class IndividualEntity
+class IndividualEntity extends BaseEntity
 {
 
     private $sex;

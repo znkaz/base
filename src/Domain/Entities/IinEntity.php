@@ -5,15 +5,15 @@ namespace ZnKaz\Base\Domain\Entities;
 class IinEntity
 {
 
-    private $value;
+    //private $value;
     private $type;
     private $juridical;
     private $individual;
-    private $serialNumber;
-    private $checkSum;
-    private $checkSumSequence;
+    //private $serialNumber;
+    //private $checkSum;
+    //private $checkSumSequence;
 
-    public function getValue()
+    /*public function getValue()
     {
         return $this->value;
     }
@@ -21,7 +21,7 @@ class IinEntity
     public function setValue($value): void
     {
         $this->value = $value;
-    }
+    }*/
 
     public function getType()
     {
@@ -53,7 +53,7 @@ class IinEntity
         $this->individual = $individual;
     }
 
-    public function getSerialNumber(): int
+    /*public function getSerialNumber(): int
     {
         return $this->serialNumber;
     }
@@ -81,5 +81,5 @@ class IinEntity
     public function setCheckSumSequence(array $checkSumSequence): void
     {
         $this->checkSumSequence = $checkSumSequence;
-    }
+    }*/
 }

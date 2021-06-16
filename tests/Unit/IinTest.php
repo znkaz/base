@@ -2,6 +2,8 @@
 
 namespace ZnCore\Base\Tests\Unit;
 
+use ZnKaz\Base\Domain\Entities\IndividualEntity;
+use ZnKaz\Base\Domain\Entities\JuridicalEntity;
 use ZnKaz\Base\Domain\Helpers\IinParser;
 use ZnTool\Test\Base\BaseTest;
 
@@ -13,8 +15,8 @@ final class IinTest extends BaseTest
         IinParser::parse('770712345674');
         IinParser::parse('921104356789');
         
-        $iinEntity = IinParser::parse('870620312341');
-        $this->assertEquals('individual', $iinEntity->getType());
+        $entity = IinParser::parse('870620312341');
+        $this->assertInstanceOf(IndividualEntity::class, $entity);
     }
 
     public function testJuridicalSuccess()
@@ -25,7 +27,7 @@ final class IinTest extends BaseTest
         IinParser::parse('961240001016');
         IinParser::parse('970240000890');
 
-        $iinEntity = IinParser::parse('050340004626');
-        $this->assertEquals('juridical', $iinEntity->getType());
+        $entity = IinParser::parse('050340004626');
+        $this->assertInstanceOf(JuridicalEntity::class, $entity);
     }
 }

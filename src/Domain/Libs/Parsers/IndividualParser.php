@@ -3,29 +3,28 @@
 namespace ZnKaz\Base\Domain\Libs\Parsers;
 
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
+use ZnKaz\Base\Domain\Entities\BaseEntity;
 use ZnKaz\Base\Domain\Entities\IinEntity;
 use ZnKaz\Base\Domain\Entities\IndividualEntity;
 use ZnKaz\Base\Domain\Enums\SexEnum;
 use ZnKaz\Base\Domain\Helpers\IinDateHelper;
 
-class IndividualParser
+class IndividualParser implements ParserInterface
 {
 
-    public function parse(string $value): IndividualEntity
+    public function parse(string $value): BaseEntity
     {
-        try {
-            $birthday = IinDateHelper::parseDateIndividual($value);
-        } catch (\Exception $e) {
-            $unprocessibleEntityException = new UnprocessibleEntityException();
-            $unprocessibleEntityException->add('birthday', $e->getMessage());
-            throw $unprocessibleEntityException;
-        }
+        $dateParser = new IndividualDateParser();
+        $birthday = $dateParser->parse($value);
         
         $individualEntity = new IndividualEntity();
+        $individualEntity->setValue($value);
         $individualEntity->setSex(self::getSex($value));
         $individualEntity->setCentury(substr($value, 6, 1));
         self::validateCentury($individualEntity->getCentury());
         $individualEntity->setBirthday($birthday);
+        $individualEntity->setSerialNumber(substr($value, 7, 4));
+        $individualEntity->setCheckSum(substr($value, 11, 1));
         return $individualEntity;
     }
     

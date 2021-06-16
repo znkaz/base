@@ -2,26 +2,11 @@
 
 namespace ZnKaz\Base\Domain\Entities;
 
-class JuridicalEntity
+class JuridicalEntity extends BaseEntity
 {
 
-    /**
-     * @var int
-     * 4 — для юридических лиц-резидентов;
-     * 5 — для юридических лиц-нерезидентов;
-     * 6 — для ИП(С);
-     */
     private $type;
-    
-    /**
-     * @var int
-     * 0 — головного подразделения юридического лица или ИП(С);
-     * 1 — филиала юридического лица или ИП(С);
-     * 2 — представительства юридического лица или ИП(С);
-     * 3 — крестьянское (фермерское) хозяйство, осуществляющее деятельность на основе совместного предпринимательства; 
-     */
     private $part;
-    
     private $registrationDate;
 
     public function getType()
