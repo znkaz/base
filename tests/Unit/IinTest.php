@@ -19,6 +19,12 @@ final class IinTest extends BaseTest
         $this->assertInstanceOf(IndividualEntity::class, $entity);
     }
 
+    public function testIndividualBadCheckSum()
+    {
+        $this->expectException(\Exception::class);
+        IinParser::parse('770712345671');
+    }
+
     public function testJuridicalSuccess()
     {
         IinParser::parse('090440002978');
@@ -29,5 +35,11 @@ final class IinTest extends BaseTest
 
         $entity = IinParser::parse('050340004626');
         $this->assertInstanceOf(JuridicalEntity::class, $entity);
+    }
+
+    public function testJuridicalBadCheckSum()
+    {
+        $this->expectException(\Exception::class);
+        IinParser::parse('090440002971');
     }
 }

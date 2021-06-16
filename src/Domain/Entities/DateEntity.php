@@ -2,23 +2,35 @@
 
 namespace ZnKaz\Base\Domain\Entities;
 
+use ZnCore\Base\Helpers\StringHelper;
+
 class DateEntity
 {
 
     private $year;
+    private $decade;
     private $month;
     private $day;
-    //private $epoch;
-    //private $century;
+    private $epoch = 0;
 
     public function getYear(): int
     {
-        return $this->year;
+        return $this->epoch + $this->decade;
     }
 
     public function setYear(int $year): void
     {
-        $this->year = $year;
+
+    }
+
+    public function getDecade(): int
+    {
+        return $this->decade;
+    }
+
+    public function setDecade(int $decade): void
+    {
+        $this->decade = $decade;
     }
 
     public function getMonth(): int
@@ -41,7 +53,7 @@ class DateEntity
         $this->day = $day;
     }
 
-    /*public function getEpoch(): ?int
+    public function getEpoch(): ?int
     {
         return $this->epoch;
     }
@@ -49,15 +61,5 @@ class DateEntity
     public function setEpoch(int $epoch): void
     {
         $this->epoch = $epoch;
-    }*/
-
-    /*public function getCentury(): int
-    {
-        return $this->century;
     }
-
-    public function setCentury(int $century): void
-    {
-        $this->century = $century;
-    }*/
 }

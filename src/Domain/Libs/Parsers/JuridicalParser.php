@@ -13,10 +13,16 @@ use ZnKaz\Base\Domain\Helpers\IinDateHelper;
 class JuridicalParser implements ParserInterface
 {
 
+    private $dateParser;
+
+    public function __construct()
+    {
+        $this->dateParser = new JuridicalDateParser();
+    }
+
     public function parse(string $value): BaseEntity
     {
-        $dateParser = new JuridicalDateParser();
-        $birthday = $dateParser->parse($value);
+        $birthday = $this->dateParser->parse($value);
         
         $juridicalEntity = new JuridicalEntity();
         $juridicalEntity->setValue($value);

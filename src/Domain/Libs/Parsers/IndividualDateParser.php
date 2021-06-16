@@ -3,6 +3,7 @@
 namespace ZnKaz\Base\Domain\Libs\Parsers;
 
 use ZnKaz\Base\Domain\Entities\DateEntity;
+use ZnKaz\Base\Domain\Exceptions\BadDateException;
 
 class IndividualDateParser implements DateParserInterface
 {
@@ -13,29 +14,30 @@ class IndividualDateParser implements DateParserInterface
         $dateEntity = new DateEntity();
 
         $century = substr($value, 6, 1);
-        $epoch = self::getEpoch($century);
-        $dateEntity->setYear($epoch . $smallYear);
+        $epoch = $this->getEpoch($century);
+        $dateEntity->setDecade($smallYear);
         $dateEntity->setMonth(substr($value, 2, 2));
         $dateEntity->setDay(substr($value, 4, 2));
+        $dateEntity->setEpoch($epoch);
 
-        if (!self::validateDate($dateEntity)) {
-            throw new Exception('Birthday not valid');
+        if (!$this->validateDate($dateEntity)) {
+            throw new BadDateException();
         }
         return $dateEntity;
     }
     
-    private static function validateDate(DateEntity $dateEntity): bool
+    private function validateDate(DateEntity $dateEntity): bool
     {
         return checkdate($dateEntity->getMonth(), $dateEntity->getDay(), $dateEntity->getYear());
     }
 
-    private static function getEpoch(int $century): int
+    private function getEpoch(int $century): int
     {
         $residue = $century % 2;
         if ($residue == 0) {
             $century--;
         }
         $centuryDiv = floor($century / 2);
-        return $centuryDiv + 18;
+        return ($centuryDiv + 18) * 100;
     }
 }

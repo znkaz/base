@@ -28,7 +28,7 @@ class BaseEntity
     {
         $this->serialNumber = $serialNumber;
     }
-    
+
     public function getCheckSum(): int
     {
         return $this->checkSum;
