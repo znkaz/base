@@ -8,15 +8,15 @@ use ZnKaz\Base\Domain\Exceptions\CheckSumGenerateException;
 class CheckSum
 {
 
-    public function generateSum($inn): CheckSumEntity
+    private $sequences = [
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        [10, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        //[3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2],
+    ];
+    
+    public function generateSum(string $inn): CheckSumEntity
     {
-        $sequences = [
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-            [10, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            //[3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2],
-        ];
-
-        foreach ($sequences as $sequence) {
+        foreach ($this->sequences as $sequence) {
             $sum = $this->calcSum($sequence, $inn);
             if ($sum != 10) {
                 $checkSumEntity = new CheckSumEntity();
@@ -29,11 +29,13 @@ class CheckSum
         throw new CheckSumGenerateException();
     }
 
-    private function calcSum(array $arr, $inn): int
+    private function calcSum(array $arr, string $inn): int
     {
         $multiplication = 0;
-        foreach ($arr as $multiplier => $rank) {
-            $multiplication = $multiplication + ($multiplier + 1) * $inn[$rank - 1];
+        foreach ($arr as $index => $rank) {
+            $char = $inn[$rank - 1];
+            $multiplier = $index + 1;
+            $multiplication = $multiplication + $multiplier * $char;
         }
         return $multiplication % 11;
     }

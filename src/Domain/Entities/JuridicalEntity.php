@@ -9,22 +9,22 @@ class JuridicalEntity extends BaseEntity
     private $part;
     private $registrationDate;
 
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }
 
-    public function setType($type): void
+    public function setType(int $type): void
     {
         $this->type = $type;
     }
 
-    public function getPart()
+    public function getPart(): int
     {
         return $this->part;
     }
 
-    public function setPart($part): void
+    public function setPart(int $part): void
     {
         $this->part = $part;
     }

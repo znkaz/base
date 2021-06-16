@@ -2,8 +2,6 @@
 
 namespace ZnKaz\Base\Domain\Entities;
 
-use ZnCore\Base\Helpers\StringHelper;
-
 class DateEntity
 {
 
@@ -53,7 +51,7 @@ class DateEntity
         $this->day = $day;
     }
 
-    public function getEpoch(): ?int
+    public function getEpoch(): int
     {
         return $this->epoch;
     }

@@ -13,7 +13,7 @@ use ZnKaz\Base\Domain\Libs\Validator;
 class IinParser
 {
 
-    public static function parse($value): BaseEntity
+    public static function parse(string $value): BaseEntity
     {
         $validator = new Validator();
         $validator->validate($value);
@@ -31,7 +31,7 @@ class IinParser
         }
     }
 
-    private static function getType($value): string
+    private static function getType(string $value): string
     {
         $typeMarker = $value[4];
         if (in_array($typeMarker, [0, 1, 2, 3])) {

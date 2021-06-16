@@ -9,12 +9,12 @@ class IndividualEntity extends BaseEntity
     private $birthday;
     private $century;
 
-    public function getSex()
+    public function getSex(): string
     {
         return $this->sex;
     }
 
-    public function setSex($sex): void
+    public function setSex(string $sex): void
     {
         $this->sex = $sex;
     }
@@ -29,7 +29,7 @@ class IndividualEntity extends BaseEntity
         $this->birthday = $birthday;
     }
     
-    public function getCentury(): ?int
+    public function getCentury(): int
     {
         return $this->century;
     }

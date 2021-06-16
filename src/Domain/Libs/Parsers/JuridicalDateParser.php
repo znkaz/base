@@ -10,9 +10,8 @@ class JuridicalDateParser implements DateParserInterface
 
     public function parse(string $value): DateEntity
     {
-        $smallYear = substr($value, 0, 2);
         $dateEntity = new DateEntity();
-        $dateEntity->setDecade($smallYear);
+        $dateEntity->setDecade(substr($value, 0, 2));
         $dateEntity->setMonth(substr($value, 2, 2));
         $dateEntity->setDay( '01');
 
