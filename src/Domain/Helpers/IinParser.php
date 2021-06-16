@@ -4,6 +4,7 @@ namespace ZnKaz\Base\Domain\Helpers;
 
 use ZnKaz\Base\Domain\Entities\BaseEntity;
 use ZnKaz\Base\Domain\Enums\TypeEnum;
+use ZnKaz\Base\Domain\Exceptions\BadTypeException;
 use ZnKaz\Base\Domain\Libs\Parsers\IndividualParser;
 use ZnKaz\Base\Domain\Libs\Parsers\JuridicalParser;
 use ZnKaz\Base\Domain\Libs\Parsers\ParserInterface;
@@ -39,6 +40,6 @@ class IinParser
         if (in_array($typeMarker, [4, 5, 6])) {
             return TypeEnum::JURIDICAL;
         }
-        throw new Exception('Error type');
+        throw new BadTypeException('Error type');
     }
 }

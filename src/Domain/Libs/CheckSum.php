@@ -3,10 +3,11 @@
 namespace ZnKaz\Base\Domain\Libs;
 
 use ZnKaz\Base\Domain\Entities\CheckSumEntity;
+use ZnKaz\Base\Domain\Exceptions\CheckSumGenerateException;
 
 class CheckSum
 {
-    
+
     public function generateSum($inn): CheckSumEntity
     {
         $sequences = [
@@ -25,7 +26,7 @@ class CheckSum
             }
         }
 
-        throw new \Exception('');
+        throw new CheckSumGenerateException();
     }
 
     private function calcSum(array $arr, $inn): int
@@ -38,8 +39,8 @@ class CheckSum
     }
 
 
-    
-    
+
+
     // проверяем ИИН/БИН на корректность (!!! старый алгоритм, не используется !!!)
     // a12=(1*a1+3*a2+7*a3+9*а4+3*а5+1*а6+9*a7+7*a8+3*a9+9*a10+1*a11) mod 10,
 

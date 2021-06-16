@@ -7,7 +7,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
 use ZnCore\Domain\Helpers\ValidationHelper;
-use ZnKaz\Base\Domain\Entities\CheckSumEntity;
+use ZnKaz\Base\Domain\Exceptions\BadCheckSumException;
+use ZnKaz\Base\Domain\Exceptions\CheckSumException;
 
 class Validator
 {
@@ -42,9 +43,8 @@ class Validator
         $checkSumEntity = $checkSum->generateSum($value);
         $sumCalculated = $checkSumEntity->getSum();
         if ($sumActual != $sumCalculated) {
-            $unprocessibleEntityException = new UnprocessibleEntityException();
-            $unprocessibleEntityException->add('value', 'Bad check sum! Actual: ' . $sumActual . ', expected: ' . $sumCalculated);
-            throw $unprocessibleEntityException;
+            $message = 'Bad check sum! Actual: ' . $sumActual . ', expected: ' . $sumCalculated;
+            throw new BadCheckSumException($message);
         }
         return $checkSumEntity->getSequence();
     }

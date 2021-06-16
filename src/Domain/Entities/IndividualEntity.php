@@ -19,12 +19,12 @@ class IndividualEntity extends BaseEntity
         $this->sex = $sex;
     }
 
-    public function getBirthday()
+    public function getBirthday(): DateEntity
     {
         return $this->birthday;
     }
 
-    public function setBirthday($birthday): void
+    public function setBirthday(DateEntity $birthday): void
     {
         $this->birthday = $birthday;
     }

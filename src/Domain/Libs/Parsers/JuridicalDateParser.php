@@ -16,11 +16,15 @@ class JuridicalDateParser implements DateParserInterface
         $dateEntity->setMonth(substr($value, 2, 2));
         $dateEntity->setDay( '01');
 
-        $isValidDate = $dateEntity->getMonth() >= 1 && $dateEntity->getMonth() <= 12 && $dateEntity->getYear() >= 0 && $dateEntity->getYear() <= 99;
-//        $isValidDate = checkdate($dateEntity->getMonth(), '01', $dateEntity->getYear());
-        if (!$isValidDate) {
+       $this->validateDate($dateEntity);
+        return $dateEntity;
+    }
+    
+    private function validateDate(DateEntity $dateEntity): void
+    {
+        $isValid = $dateEntity->getMonth() >= 1 && $dateEntity->getMonth() <= 12 && $dateEntity->getYear() >= 0 && $dateEntity->getYear() <= 99;
+        if (!$isValid) {
             throw new BadDateException();
         }
-        return $dateEntity;
     }
 }

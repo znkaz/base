@@ -5,6 +5,7 @@ namespace ZnKaz\Base\Domain\Libs\Parsers;
 use ZnKaz\Base\Domain\Entities\BaseEntity;
 use ZnKaz\Base\Domain\Entities\IndividualEntity;
 use ZnKaz\Base\Domain\Enums\SexEnum;
+use ZnKaz\Base\Domain\Exceptions\BadCenturyException;
 use ZnKaz\Base\Domain\Helpers\IinDateHelper;
 
 class IndividualParser implements ParserInterface
@@ -42,7 +43,7 @@ class IndividualParser implements ParserInterface
     {
         $maxCentury = $this->getMaxCentury();
         if ($century < 1 || $century > $maxCentury) {
-            throw new \Exception('Century not correct');
+            throw new BadCenturyException();
         }
     }
 

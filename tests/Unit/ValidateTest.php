@@ -4,10 +4,13 @@ namespace ZnCore\Base\Tests\Unit;
 
 use ZnKaz\Base\Domain\Entities\IndividualEntity;
 use ZnKaz\Base\Domain\Entities\JuridicalEntity;
+use ZnKaz\Base\Domain\Exceptions\BadCenturyException;
+use ZnKaz\Base\Domain\Exceptions\BadDateException;
+use ZnKaz\Base\Domain\Exceptions\BadTypeException;
 use ZnKaz\Base\Domain\Helpers\IinParser;
 use ZnTool\Test\Base\BaseTest;
 
-final class IinTest extends BaseTest
+final class ValidateTest extends BaseTest
 {
 
     public function testIndividualSuccess()
@@ -23,6 +26,24 @@ final class IinTest extends BaseTest
     {
         $this->expectException(\Exception::class);
         IinParser::parse('770712345671');
+    }
+
+    public function testIndividualBadDateMonth()
+    {
+        $this->expectException(BadDateException::class);
+        IinParser::parse('772712345672');
+    }
+
+    public function testBadType()
+    {
+        $this->expectException(BadTypeException::class);
+        IinParser::parse('770772345671');
+    }
+
+    public function testBadCentiry()
+    {
+        $this->expectException(BadCenturyException::class);
+        IinParser::parse('770712745676');
     }
 
     public function testJuridicalSuccess()

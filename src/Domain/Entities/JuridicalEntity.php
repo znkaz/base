@@ -29,12 +29,12 @@ class JuridicalEntity extends BaseEntity
         $this->part = $part;
     }
 
-    public function getRegistrationDate()
+    public function getRegistrationDate(): DateEntity
     {
         return $this->registrationDate;
     }
 
-    public function setRegistrationDate($registrationDate): void
+    public function setRegistrationDate(DateEntity $registrationDate): void
     {
         $this->registrationDate = $registrationDate;
     }

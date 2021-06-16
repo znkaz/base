@@ -20,15 +20,16 @@ class IndividualDateParser implements DateParserInterface
         $dateEntity->setDay(substr($value, 4, 2));
         $dateEntity->setEpoch($epoch);
 
-        if (!$this->validateDate($dateEntity)) {
-            throw new BadDateException();
-        }
+        $this->validateDate($dateEntity);
         return $dateEntity;
     }
     
-    private function validateDate(DateEntity $dateEntity): bool
+    private function validateDate(DateEntity $dateEntity): void
     {
-        return checkdate($dateEntity->getMonth(), $dateEntity->getDay(), $dateEntity->getYear());
+        $isValid = checkdate($dateEntity->getMonth(), $dateEntity->getDay(), $dateEntity->getYear());
+        if (!$isValid) {
+            throw new BadDateException();
+        }
     }
 
     private function getEpoch(int $century): int
