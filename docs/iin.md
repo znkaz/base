@@ -8,4 +8,4 @@ use ZnKaz\Iin\Domain\Helpers\IinParser;
 $iinEntity = IinParser::parse('000000000000');
 ```
 
-в ответ получим сущность, либо исключение `\ZnCore\Validation\Exceptions\UnprocessibleEntityException`.
+в ответ получим сущность, либо исключение `\ZnDomain\Validator\Exceptions\UnprocessibleEntityException`.
